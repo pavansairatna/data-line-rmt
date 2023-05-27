@@ -1,0 +1,41 @@
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class ScreenPresentation extends JPanel {
+
+    private BufferedImage screenImage;
+
+    public ScreenPresentation() {
+        try {
+            Robot robot = new Robot();
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            screenImage = robot.createScreenCapture(new Rectangle(screenSize));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(screenImage, 0, 0, getWidth(), getHeight(), this);
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Screen Presentation");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+
+        ScreenPresentation screenPresentation = new ScreenPresentation();
+        frame.getContentPane().add(screenPresentation);
+
+        frame.pack();
+        frame.setVisible(true);
+    }
+}
