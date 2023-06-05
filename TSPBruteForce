@@ -1,0 +1,65 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class TSPBruteForce {
+    private static int[][] distances = {
+        {0, 10, 15, 20},
+        {10, 0, 35, 25},
+        {15, 35, 0, 30},
+        {20, 25, 30, 0}
+    };
+    
+    private static int numCities = distances.length;
+    
+    private static List<Integer> bestRoute;
+    private static int shortestDistance = Integer.MAX_VALUE;
+    
+    public static void main(String[] args) {
+        List<Integer> cities = new ArrayList<>();
+        for (int i = 0; i < numCities; i++) {
+            cities.add(i);
+        }
+        
+        permute(cities, 0);
+        
+        System.out.println("Shortest route: " + bestRoute);
+        System.out.println("Shortest distance: " + shortestDistance);
+    }
+    
+    private static void permute(List<Integer> cities, int start) {
+        if (start == cities.size() - 1) {
+            calculateDistance(cities);
+        } else {
+            for (int i = start; i < cities.size(); i++) {
+                swap(cities, start, i);
+                permute(cities, start + 1);
+                swap(cities, start, i); // backtrack
+            }
+        }
+    }
+    
+    private static void calculateDistance(List<Integer> cities) {
+        int distance = 0;
+        for (int i = 0; i < cities.size() - 1; i++) {
+            int city1 = cities.get(i);
+            int city2 = cities.get(i + 1);
+            distance += distances[city1][city2];
+        }
+        
+        int startCity = cities.get(0);
+        int lastCity = cities.get(cities.size() - 1);
+        distance += distances[lastCity][startCity];
+        
+        if (distance < shortestDistance) {
+            shortestDistance = distance;
+            bestRoute = new ArrayList<>(cities);
+        }
+    }
+    
+    private static void swap(List<Integer> cities, int i, int j) {
+        int temp = cities.get(i);
+        cities.set(i, cities.get(j));
+        cities.set(j, temp);
+    }
+}
