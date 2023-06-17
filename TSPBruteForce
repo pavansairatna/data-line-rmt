@@ -40,7 +40,7 @@ public class TSPBruteForce {
     }
     
     private static void calculateDistance(List<Integer> cities) {
-        int distance = 0;
+        int distance= 0;
         for (int i = 0; i < cities.size() - 1; i++) {
             int city1 = cities.get(i);
             int city2 = cities.get(i + 1);
